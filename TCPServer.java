@@ -1,6 +1,7 @@
 package TCPDocument;
 
 import java.io.DataInputStream;
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.net.ServerSocket;
@@ -12,7 +13,6 @@ public class TCPServer {
 	private ServerSocket serverSocket;
 	private DataInputStream dis;
 	private FileOutputStream output;
-	private boolean started = false;
 
 	public static void main(String[] args) {
 		new TCPServer().link();
@@ -24,7 +24,6 @@ public class TCPServer {
 			System.out.println("创建服务器成功,等待连接");
 			client = serverSocket.accept();
 			System.out.println("客户连接成功");
-			started = true;
 			receive();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -49,21 +48,28 @@ public class TCPServer {
 				
 				if (file.createNewFile()) {
 					output = new FileOutputStream(file);
-						while (started) {
+					int i = 1;
+					while(i > 0)
+					{
 							byte[] data = new byte[1024];
 							String str = dis.readUTF();	
 							data = str.getBytes();
+							for(int j=0; j<=data.length; j++)
+							{
+								i = -1;
+							}
 							output.write(data);
 							//System.out.println(str);
-						}
+					}
 				}
 			} else {
 				System.out.println("复制路径已存在相同文件名");
 				System.out.println("传输失败");
 			}
 			System.out.println("传输完毕");
-		} catch (Exception e) {
-			//e.printStackTrace();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
 		} finally {
 			disconnect();
 		}
