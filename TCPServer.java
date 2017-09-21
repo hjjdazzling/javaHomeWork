@@ -48,7 +48,7 @@ public class TCPServer {
 				
 				if (file.createNewFile()) {
 					output = new FileOutputStream(file);
-					int i = 1;
+					/*int i = 1;
 					while(i > 0)
 					{
 							byte[] data = new byte[1024];
@@ -60,7 +60,8 @@ public class TCPServer {
 							}
 							output.write(data);
 							//System.out.println(str);
-					}
+					}*/
+					output.write(dis.readUTF().getBytes());
 				}
 			} else {
 				System.out.println("复制路径已存在相同文件名");
